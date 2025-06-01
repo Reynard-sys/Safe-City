@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart'; // Add this import
+import 'package:location/location.dart';
+import 'package:safe_city/chatbot.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,11 +29,8 @@ class _MapPageState extends State<MapPage> {
 
   final Completer<GoogleMapController> _mapController = Completer<
       GoogleMapController>();
-
   static const LatLng _pGooglePlex = LatLng(
       14.676178523935386, 121.03316764130763);
-  static const LatLng _pApplePark = LatLng(
-      14.599173347940376, 121.01186908646466);
   LatLng? _currentPosition = null;
 
   @override
@@ -50,6 +47,7 @@ class _MapPageState extends State<MapPage> {
           ? const Center(child: Text("Loading..."))
           : Stack(
         children: [
+          // Google Map in the background
           GoogleMap(
             onMapCreated: (controller) {
               _mapController.complete(controller);
@@ -64,20 +62,51 @@ class _MapPageState extends State<MapPage> {
                 icon: BitmapDescriptor.defaultMarker,
                 position: _currentPosition!,
               ),
-              Marker(
-                markerId: MarkerId("_sourceLocation"),
-                icon: BitmapDescriptor.defaultMarker,
-                position: _pGooglePlex,
-              ),
-              Marker(
-                markerId: MarkerId("_destinationLocation"),
-                icon: BitmapDescriptor.defaultMarker,
-                position: _pApplePark,
-              ),
             },
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
           ),
+
+          // Custom header on top
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 100,
+              color: Color(0xFFE5FFFF),
+              padding: EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.contact_support_rounded),
+                        onPressed: () {
+                          print("Contact Support Icon Tapped!");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ChatBot()),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.settings),
+                        onPressed: () {
+                          // Handle settings action
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Bottom nav bar
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -97,30 +126,22 @@ class _MapPageState extends State<MapPage> {
                   NavItem(
                     icon: Icons.location_on,
                     label: 'Maps',
-                    onTap: () {
-                      // Do something
-                    },
+                    onTap: () {},
                   ),
                   NavItem(
                     icon: Icons.local_police_sharp,
                     label: 'Report a Crime',
-                    onTap: () {
-                      // Do something
-                    },
+                    onTap: () {},
                   ),
                   NavItem(
                     icon: Icons.phone_in_talk,
                     label: 'Fake Call',
-                    onTap: () {
-                      // Do something
-                    },
+                    onTap: () {},
                   ),
                   NavItem(
                     icon: Icons.nordic_walking,
                     label: 'Walk-with-Me',
-                    onTap: () {
-                      // Do something
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -130,6 +151,7 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
+
 
   Future<void> _cameraToPosition(LatLng pos) async {
     final GoogleMapController controller = await _mapController.future;
