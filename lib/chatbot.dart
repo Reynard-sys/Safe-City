@@ -22,7 +22,7 @@ class _ChatBotState extends State<ChatBot> {
     // TODO: implement initState
     super.initState();
     _model = GenerativeModel(
-      model: 'gemini-pro',
+      model: 'gemini-2.0-flash',
       apiKey: const String.fromEnvironment('api_key'),
     );
     _chatSession = _model.startChat();
@@ -69,6 +69,7 @@ class _ChatBotState extends State<ChatBot> {
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
+                itemCount: _chatSession.history.length,
                 itemBuilder: (context, index) {
                   final Content content = _chatSession.history.toList()[index];
                   final text = content.parts.whereType<TextPart>().map<

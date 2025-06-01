@@ -75,11 +75,16 @@ class _MapPageState extends State<MapPage> {
             child: Container(
               height: 100,
               color: Color(0xFFE5FFFF),
-              padding: EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    'assets/combined_logo.png',
+                    width: 10,
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       IconButton(

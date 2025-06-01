@@ -14,22 +14,25 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: isFromUser
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            margin: const EdgeInsets.only(bottom: 8),
             constraints: const BoxConstraints(maxWidth: 520),
             decoration: BoxDecoration(
-            color: Color(0xFF1E1E1E),
-            borderRadius: BorderRadius.circular(18),
+              color: isFromUser
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(18),
             ),
-            child: Column(
-              children: [
-                MarkdownBody(data: text),
-              ],
-            )
-          )
-        )
-      ]
+            child: Column(children: [MarkdownBody(data: text)]),
+          ),
+        ),
+      ],
     );
   }
 }
