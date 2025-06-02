@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:safe_city/chatbot.dart';
+import 'package:safe_city/fake_call_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -141,7 +142,12 @@ class _MapPageState extends State<MapPage> {
                   NavItem(
                     icon: Icons.phone_in_talk,
                     label: 'Fake Call',
-                    onTap: () {},
+                    onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const FakeCallPage()),
+                      );
+                    },
                   ),
                   NavItem(
                     icon: Icons.nordic_walking,
