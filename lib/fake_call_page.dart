@@ -88,7 +88,7 @@ class _FakeCallPageState extends State<FakeCallPage> {
               ),
               const SizedBox(height: 20),
               const Text(
-                "AI Assistant",
+                "Baby Dukie",
                 style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
