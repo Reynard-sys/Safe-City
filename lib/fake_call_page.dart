@@ -40,7 +40,7 @@ class _FakeCallPageState extends State<FakeCallPage> {
   }
 
   Future<void> _speakFakeVoice() async {
-    await _flutterTts.speak("Hey! Just calling to check on you. Are you okay?");
+    await _audioPlayer.play(AssetSource('deep.m4a'));
   }
 
   void _answerCall() {

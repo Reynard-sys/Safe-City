@@ -20,22 +20,19 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-
     _model = GenerativeModel(
       model: 'gemini-2.0-flash',
       apiKey: dotenv.env['API_KEY'] ?? '',
     );
-    _chatSession = _model.startChat();
 
     _textController.addListener(() {
-      setState(() {
-        // This will rebuild the widget whenever the text changes,
-        // updating the send button's enabled state.
-      });
+      setState(() {});
     });
-  }
 
+    _chatSession = _model.startChat();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +56,7 @@ class _ChatBotState extends State<ChatBot> {
                   child: Center(
                     child: Image.asset(
                       'assets/logo.png', // replace with your logo path
-                      height: 50,
-                      width: 50,
+                      height: 30,
                     ),
                   ),
                 ),
@@ -107,7 +103,7 @@ class _ChatBotState extends State<ChatBot> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.send, color: Theme.of(context).colorScheme.secondary),
+                    icon: Icon(Icons.send, color: Color(0xFF2452EE)),
                     onPressed: _loading || _textController.text.trim().isEmpty
                         ? null
                         : () {
@@ -188,13 +184,13 @@ class _ChatBotState extends State<ChatBot> {
 
   void _scrollDown() {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(
-            milliseconds: 750,
-          ),
-          curve: Curves.easeOutCirc,
+          (_) => _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(
+          milliseconds: 750,
         ),
+        curve: Curves.easeOutCirc,
+      ),
     );
   }
 
@@ -209,9 +205,9 @@ class _ChatBotState extends State<ChatBot> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: const Text('OK'),
             )
           ],
@@ -220,5 +216,3 @@ class _ChatBotState extends State<ChatBot> {
     );
   }
 }
-
-
