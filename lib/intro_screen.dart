@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_city/signup_screen.dart';
 import 'login_screen.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -38,7 +39,10 @@ class IntroScreen extends StatelessWidget {
 
             OutlinedButton(
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignupScreen())
+                );
               },
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),

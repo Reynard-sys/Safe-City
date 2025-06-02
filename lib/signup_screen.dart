@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'main.dart';
+import 'main.dart'; // Replace if needed
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  void _signIn() async {
+  void _signUp() async {
     if (_formKey.currentState!.validate()) {
       setState(() => isLoading = true);
 
       try {
-        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
@@ -29,19 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
         if (mounted) {
           setState(() => isLoading = false);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Signed in as ${credential.user?.email}')),
+            SnackBar(content: Text('Registered as ${credential.user?.email}')),
           );
 
-          // TODO: Navigate to home screen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => MapPage()), // or your landing screen
+            MaterialPageRoute(builder: (_) => MapPage()),
           );
         }
       } on FirebaseAuthException catch (e) {
         setState(() => isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Sign in failed')),
+          SnackBar(content: Text(e.message ?? 'Sign up failed')),
         );
       }
     }
@@ -57,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo
                 Image.asset(
                   'assets/combined_logo.png',
                   height: 120,
@@ -74,18 +72,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: emailController,
                         validator: (value) => value?.isEmpty ?? true ? 'Please enter email' : null,
                         decoration: const InputDecoration(
-                            labelText: 'Enter your email to Sign In',
-                            hintText: 'email@domain.com'
+                          labelText: 'Enter your email to Sign Up',
+                          hintText: 'email@domain.com',
                         ),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: passwordController,
                         obscureText: true,
-                        validator: (value) => value?.isEmpty ?? true ? 'Please enter password' : null,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return 'Please enter password';
+                          if (value.length < 6) return 'Password must be at least 6 characters';
+                          return null;
+                        },
                         decoration: const InputDecoration(
-                            labelText: 'Enter your password',
-                            hintText: '••••••••'
+                          labelText: 'Create a password',
+                          hintText: '••••••••',
                         ),
                       ),
                     ],
@@ -94,18 +96,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 30),
 
-                // Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: isLoading ? null : _signIn,
+                      onPressed: isLoading ? null : _signUp,
                       child: isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Sign In'),
+                          : const Text('Sign Up'),
                     ),
-
-                    OutlinedButton(
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
