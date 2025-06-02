@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'order_tracking_page.dart';
+import 'login_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -24,7 +23,7 @@ class IntroScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => OrderTrackingPage()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
