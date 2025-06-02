@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:safe_city/chatbot.dart';
 import 'package:safe_city/fake_call_page.dart';
+import 'package:safe_city/report_crime_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -137,7 +138,12 @@ class _MapPageState extends State<MapPage> {
                   NavItem(
                     icon: Icons.local_police_sharp,
                     label: 'Report a Crime',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ReportCrimePage()),
+                      );
+                    },
                   ),
                   NavItem(
                     icon: Icons.phone_in_talk,
