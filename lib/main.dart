@@ -5,8 +5,11 @@ import 'package:location/location.dart';
 import 'package:safe_city/chatbot.dart';
 import 'package:safe_city/fake_call_page.dart';
 import 'package:safe_city/report_crime_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "gemini_api.env");
   runApp(MyApp());
 }
 

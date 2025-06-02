@@ -25,11 +25,17 @@ class MessageWidget extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 520),
             decoration: BoxDecoration(
               color: isFromUser
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
+                  ? Color(0xFF2452EE)
+                  : Color(0xFFF2F3F7),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: Column(children: [MarkdownBody(data: text)]),
+            child: MarkdownBody(data: text, styleSheet: MarkdownStyleSheet(
+              p: TextStyle(
+                color: isFromUser ? Colors.white : Colors.black, // font colors
+                fontSize: 16,
+              ),
+            ),
+            )
           ),
         ),
       ],

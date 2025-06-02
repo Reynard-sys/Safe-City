@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:safe_city/message_widget.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatBot extends StatefulWidget {
   const ChatBot({super.key});
@@ -19,14 +20,22 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     _model = GenerativeModel(
       model: 'gemini-2.0-flash',
-      apiKey: const String.fromEnvironment('api_key'),
+      apiKey: dotenv.env['API_KEY'] ?? '',
     );
     _chatSession = _model.startChat();
+
+    _textController.addListener(() {
+      setState(() {
+        // This will rebuild the widget whenever the text changes,
+        // updating the send button's enabled state.
+      });
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +59,8 @@ class _ChatBotState extends State<ChatBot> {
                   child: Center(
                     child: Image.asset(
                       'assets/logo.png', // replace with your logo path
-                      height: 30,
+                      height: 50,
+                      width: 50,
                     ),
                   ),
                 ),
@@ -88,15 +98,22 @@ class _ChatBotState extends State<ChatBot> {
               child: Row(
                 children: [
                   Expanded(
-                      child: TextField(
-                        autofocus: true,
-                        focusNode: _textFieldFocus,
-                        decoration: textFieldDecoration(),
-                        controller: _textController,
-                        onSubmitted: _sendChatMessage,
-                      ),
+                    child: TextField(
+                      autofocus: true,
+                      focusNode: _textFieldFocus,
+                      decoration: textFieldDecoration(),
+                      controller: _textController,
+                      onSubmitted: _sendChatMessage,
+                    ),
                   ),
-                  const SizedBox(height: 15,),
+                  IconButton(
+                    icon: Icon(Icons.send, color: Theme.of(context).colorScheme.secondary),
+                    onPressed: _loading || _textController.text.trim().isEmpty
+                        ? null
+                        : () {
+                      _sendChatMessage(_textController.text.trim());
+                    },
+                  ),
                 ],
               ),
             )
