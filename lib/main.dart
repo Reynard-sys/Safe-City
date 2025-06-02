@@ -38,11 +38,11 @@ class _MapPageState extends State<MapPage> {
   static const LatLng _pGooglePlex = LatLng(
       14.676178523935386, 121.03316764130763);
   static const LatLng _Roi = LatLng(
-      14.599196135932349, 121.0118715635317);
+      14.677778005314575, 121.0321500772428);
   static const LatLng _Mhyca = LatLng(
-      14.599196135932349, 121.0118715635317);
+      14.670549534316887, 121.03700195954309);
   static const LatLng _Denrick = LatLng(
-      14.623559169812697, 121.05450782142849);
+      14.669716400002702, 121.03272666778895);
   LatLng? _currentPosition = null;
   BitmapDescriptor? _reyIcon;
   BitmapDescriptor? _roiIcon;

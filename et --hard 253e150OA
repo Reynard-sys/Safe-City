@@ -1,0 +1,17 @@
+[33m5023b8c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~2
+[33m710f19f[m HEAD@{1}: reset: moving to HEAD~2
+[33m253e150[m HEAD@{2}: reset: moving to HEAD~2
+[33mc82b465[m[33m ([m[1;31morigin/roi[m[33m)[m HEAD@{3}: reset: moving to HEAD
+[33mc82b465[m[33m ([m[1;31morigin/roi[m[33m)[m HEAD@{4}: reset: moving to HEAD~2
+[33m1975e14[m HEAD@{5}: reset: moving to HEAD
+[33m1975e14[m HEAD@{6}: commit: Added pictures and markers
+[33m11d0745[m HEAD@{7}: commit: changed chatbot colors, and api setting
+[33mc82b465[m[33m ([m[1;31morigin/roi[m[33m)[m HEAD@{8}: reset: moving to origin/roi
+[33me5402cb[m HEAD@{9}: commit: replaced json with env
+[33mc82b465[m[33m ([m[1;31morigin/roi[m[33m)[m HEAD@{10}: reset: moving to origin/roi
+[33md7a03b7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{11}: checkout: moving from main to main
+[33md7a03b7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{12}: pull: Merge made by the 'ort' strategy.
+[33m710f19f[m HEAD@{13}: commit: Added chatbot
+[33ma6839f4[m HEAD@{14}: commit: Added draft of chatbot
+[33m5023b8c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{15}: Branch: renamed refs/heads/master to refs/heads/main
+[33m5023b8c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{17}: commit (initial): first commit
