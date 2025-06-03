@@ -165,7 +165,6 @@ class _ReportCrimePageState extends State<ReportCrimePage> {
                 NavItem(icon: Icons.location_on, label: 'Maps', onTap: () => Navigator.pop(context)),
                 NavItem(icon: Icons.local_police_sharp, label: 'Report a Crime', onTap: () {}),
                 NavItem(icon: Icons.phone_in_talk, label: 'Fake Call', onTap: () => Navigator.pushNamed(context, '/fake')),
-                NavItem(icon: Icons.nordic_walking, label: 'Walk-with-Me', onTap: () {}),
               ],
             ),
           ),

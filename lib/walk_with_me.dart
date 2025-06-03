@@ -21,7 +21,7 @@ class _PinLocationPageState extends State<PinLocationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Pin Destination')),
+      appBar: AppBar(title: Text('Pin Destination'), backgroundColor: Color(0xFFE5FFFF)),
       body: Stack(
         children: [
           GoogleMap(

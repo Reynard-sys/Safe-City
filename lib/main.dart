@@ -8,7 +8,6 @@ import 'package:safe_city/report_crime_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:safe_city/marker_icon.dart';
 import 'package:safe_city/walk_with_me.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MapPage(),
+      routes: {
+    '/fake': (context) => const FakeCallPage(),
+    '/chat': (context) => const ChatBot(),
+    '/report_crime': (context) => const ReportCrimePage(),
+    '/map': (context) => MapPage(),
+    },
     );
   }
 }
@@ -34,10 +39,6 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   Location _locationController = new Location();
-
-  List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints = PolylinePoints();
-  Set<Polyline> _polylines = {};
 
   final Completer<GoogleMapController> _mapController = Completer<
       GoogleMapController>();
@@ -71,35 +72,6 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-  Future<void> getPolyLinePoints(LatLng start, LatLng destination) async {
-    String googleAPIKey = dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
-    List<LatLng> polylineCoordinates = [];
-    PolylinePoints polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleAPIKey,
-      PointLatLng(start.latitude, start.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
-      travelMode: TravelMode.walking,
-    );
-    if (result.status == 'OK') {
-      polylineCoordinates.clear();
-      for (var point in result.points) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      }
-      setState(() {
-        _polylines = {
-          Polyline(
-            polylineId: PolylineId("route"),
-            color: Colors.blue,
-            width: 5,
-            points: polylineCoordinates,
-          ),
-        };
-      });
-    } else {
-      print('Error fetching directions: ${result.errorMessage}');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,12 +180,8 @@ class _MapPageState extends State<MapPage> {
                   setState(() {
                     _destinationPosition = selectedLocation;
                   });
-
-                  if (_currentPosition != null) {
-                    await _getRouteBetweenCoordinates(
-                        _currentPosition!, _destinationPosition!);
-                  }
-                }},
+                }
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                 decoration: BoxDecoration(
@@ -229,7 +197,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.directions_walk),
+                    Icon(Icons.nordic_walking),
                     SizedBox(width: 10),
                     Text("Walk-with-me", style: TextStyle(color: Colors.grey)),
                   ],
@@ -278,11 +246,6 @@ class _MapPageState extends State<MapPage> {
                         MaterialPageRoute(builder: (_) => const FakeCallPage()),
                       );
                     },
-                  ),
-                  NavItem(
-                    icon: Icons.nordic_walking,
-                    label: 'Walk-with-Me',
-                    onTap: () {},
                   ),
                 ],
               ),

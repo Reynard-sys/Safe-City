@@ -129,10 +129,9 @@ class CrimeReportSummaryPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.location_on, 'Maps', () => Navigator.pop(context)),
+          _buildNavItem(Icons.location_on, 'Maps', () => Navigator.pushNamed(context, '/map')),
           _buildNavItem(Icons.local_police_sharp, 'Report', () => Navigator.pushNamed(context, '/report_crime')),
           _buildNavItem(Icons.phone_in_talk, 'Fake Call', () => Navigator.pushNamed(context, '/fake_call')),
-          _buildNavItem(Icons.nordic_walking, 'Walk-with-Me', () {}),
         ],
       ),
     );
@@ -144,7 +143,7 @@ class CrimeReportSummaryPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.teal),
+          Icon(icon, color: Colors.black),
           const SizedBox(height: 4),
           Text(label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
         ],
