@@ -7,6 +7,8 @@ import 'package:safe_city/fake_call_page.dart';
 import 'package:safe_city/report_crime_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:safe_city/marker_icon.dart';
+import 'package:safe_city/walk_with_me.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,10 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   Location _locationController = new Location();
 
+  List<LatLng> polylineCoordinates = [];
+  PolylinePoints polylinePoints = PolylinePoints();
+  Set<Polyline> _polylines = {};
+
   final Completer<GoogleMapController> _mapController = Completer<
       GoogleMapController>();
   static const LatLng _pGooglePlex = LatLng(
@@ -44,6 +50,7 @@ class _MapPageState extends State<MapPage> {
   static const LatLng _Denrick = LatLng(
       14.669716400002702, 121.03272666778895);
   LatLng? _currentPosition = null;
+  LatLng? _destinationPosition = null;
   BitmapDescriptor? _reyIcon;
   BitmapDescriptor? _roiIcon;
   BitmapDescriptor? _denrickIcon;
@@ -64,6 +71,35 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
+  Future<void> getPolyLinePoints(LatLng start, LatLng destination) async {
+    String googleAPIKey = dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(start.latitude, start.longitude),
+      PointLatLng(destination.latitude, destination.longitude),
+      travelMode: TravelMode.walking,
+    );
+    if (result.status == 'OK') {
+      polylineCoordinates.clear();
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+      setState(() {
+        _polylines = {
+          Polyline(
+            polylineId: PolylineId("route"),
+            color: Colors.blue,
+            width: 5,
+            points: polylineCoordinates,
+          ),
+        };
+      });
+    } else {
+      print('Error fetching directions: ${result.errorMessage}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +138,12 @@ class _MapPageState extends State<MapPage> {
                 icon: _mhycaIcon ?? BitmapDescriptor.defaultMarker,
                 position: _Mhyca,
               ),
+              if (_destinationPosition != null)
+                Marker(
+                  markerId: MarkerId("_destination"),
+                  position: _destinationPosition!,
+                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                ),
             },
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
@@ -151,6 +193,50 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
 
+          Positioned(
+            top: 100,
+            left: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: () async {
+                final LatLng? selectedLocation = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const PinLocationPage()),
+                );
+
+                if (selectedLocation != null) {
+                  setState(() {
+                    _destinationPosition = selectedLocation;
+                  });
+
+                  if (_currentPosition != null) {
+                    await _getRouteBetweenCoordinates(
+                        _currentPosition!, _destinationPosition!);
+                  }
+                }},
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.directions_walk),
+                    SizedBox(width: 10),
+                    Text("Walk-with-me", style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+              ),
+            ),
+          ),
           // Bottom nav bar
           Align(
             alignment: Alignment.bottomCenter,
