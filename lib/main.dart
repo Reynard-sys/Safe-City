@@ -5,8 +5,12 @@ import 'package:location/location.dart';
 import 'package:safe_city/chatbot.dart';
 import 'package:safe_city/fake_call_page.dart';
 import 'package:safe_city/report_crime_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:safe_city/marker_icon.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "gemini_api.env");
   runApp(MyApp());
 }
 
@@ -33,12 +37,31 @@ class _MapPageState extends State<MapPage> {
       GoogleMapController>();
   static const LatLng _pGooglePlex = LatLng(
       14.676178523935386, 121.03316764130763);
+  static const LatLng _Roi = LatLng(
+      14.677778005314575, 121.0321500772428);
+  static const LatLng _Mhyca = LatLng(
+      14.670549534316887, 121.03700195954309);
+  static const LatLng _Denrick = LatLng(
+      14.669716400002702, 121.03272666778895);
   LatLng? _currentPosition = null;
+  BitmapDescriptor? _reyIcon;
+  BitmapDescriptor? _roiIcon;
+  BitmapDescriptor? _denrickIcon;
+  BitmapDescriptor? _mhycaIcon;
 
   @override
   void initState() {
     super.initState();
+    _loadCustomMarker();
     getLocationUpdates();
+  }
+
+  void _loadCustomMarker() async {
+    _reyIcon = await createCustomMarkerWithTail('assets/rey.png');
+    _roiIcon = await createCustomMarkerWithTail('assets/roi.png');
+    _denrickIcon = await createCustomMarkerWithTail('assets/denrick.png');
+    _mhycaIcon = await createCustomMarkerWithTail('assets/mhyca.png');// Replace with your actual image
+    setState(() {});
   }
 
 
@@ -61,8 +84,23 @@ class _MapPageState extends State<MapPage> {
             markers: {
               Marker(
                 markerId: MarkerId("_currentLocation"),
-                icon: BitmapDescriptor.defaultMarker,
+                icon: _reyIcon ?? BitmapDescriptor.defaultMarker,
                 position: _currentPosition!,
+              ),
+              Marker(
+                markerId: MarkerId("_Roi"),
+                icon: _roiIcon ?? BitmapDescriptor.defaultMarker,
+                position: _Roi,
+              ),
+              Marker(
+                markerId: MarkerId("_Denrick"),
+                icon: _denrickIcon ?? BitmapDescriptor.defaultMarker,
+                position: _Denrick,
+              ),
+              Marker(
+                markerId: MarkerId("_Mhyca"),
+                icon: _mhycaIcon ?? BitmapDescriptor.defaultMarker,
+                position: _Mhyca,
               ),
             },
             myLocationEnabled: true,

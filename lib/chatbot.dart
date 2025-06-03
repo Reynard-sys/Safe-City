@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:safe_city/message_widget.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatBot extends StatefulWidget {
   const ChatBot({super.key});
@@ -23,8 +24,13 @@ class _ChatBotState extends State<ChatBot> {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-2.0-flash',
-      apiKey: const String.fromEnvironment('api_key'),
+      apiKey: dotenv.env['API_KEY'] ?? '',
     );
+
+    _textController.addListener(() {
+      setState(() {});
+    });
+
     _chatSession = _model.startChat();
   }
 
@@ -88,15 +94,22 @@ class _ChatBotState extends State<ChatBot> {
               child: Row(
                 children: [
                   Expanded(
-                      child: TextField(
-                        autofocus: true,
-                        focusNode: _textFieldFocus,
-                        decoration: textFieldDecoration(),
-                        controller: _textController,
-                        onSubmitted: _sendChatMessage,
-                      ),
+                    child: TextField(
+                      autofocus: true,
+                      focusNode: _textFieldFocus,
+                      decoration: textFieldDecoration(),
+                      controller: _textController,
+                      onSubmitted: _sendChatMessage,
+                    ),
                   ),
-                  const SizedBox(height: 15,),
+                  IconButton(
+                    icon: Icon(Icons.send, color: Color(0xFF2452EE)),
+                    onPressed: _loading || _textController.text.trim().isEmpty
+                        ? null
+                        : () {
+                      _sendChatMessage(_textController.text.trim());
+                    },
+                  ),
                 ],
               ),
             )
@@ -171,13 +184,13 @@ class _ChatBotState extends State<ChatBot> {
 
   void _scrollDown() {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(
-            milliseconds: 750,
-          ),
-          curve: Curves.easeOutCirc,
+          (_) => _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(
+          milliseconds: 750,
         ),
+        curve: Curves.easeOutCirc,
+      ),
     );
   }
 
@@ -192,9 +205,9 @@ class _ChatBotState extends State<ChatBot> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: const Text('OK'),
             )
           ],
@@ -203,5 +216,3 @@ class _ChatBotState extends State<ChatBot> {
     );
   }
 }
-
-

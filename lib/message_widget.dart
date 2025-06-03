@@ -20,16 +20,22 @@ class MessageWidget extends StatelessWidget {
       children: [
         Flexible(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            margin: const EdgeInsets.only(bottom: 8),
-            constraints: const BoxConstraints(maxWidth: 520),
-            decoration: BoxDecoration(
-              color: isFromUser
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Column(children: [MarkdownBody(data: text)]),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              margin: const EdgeInsets.only(bottom: 8),
+              constraints: const BoxConstraints(maxWidth: 520),
+              decoration: BoxDecoration(
+                color: isFromUser
+                    ? Color(0xFF2452EE)
+                    : Color(0xFFF2F3F7),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: MarkdownBody(data: text, styleSheet: MarkdownStyleSheet(
+                p: TextStyle(
+                  color: isFromUser ? Colors.white : Colors.black, // font colors
+                  fontSize: 16,
+                ),
+              ),
+              )
           ),
         ),
       ],
